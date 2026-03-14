@@ -239,9 +239,8 @@ function showSuggestions(value) {
         div.dataset.index = index;
         
         div.addEventListener('click', function() {
-            searchInput.value = player.name;
+            window.open(`https://www.fightcade.com/id/${player.name}`, '_blank');
             autocompleteList.classList.remove('show');
-            console.log('Jogador selecionado:', player.name, 'País:', player.country);
         });
         
         autocompleteList.appendChild(div);
