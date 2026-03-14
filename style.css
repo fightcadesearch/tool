@@ -441,3 +441,34 @@ body {
         width: 100%;
     }
 }
+
+/* Footer */
+.footer {
+    padding: 3rem 0 2rem;
+    text-align: center;
+}
+
+.footer-text {
+    color: rgba(220, 192, 210, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.search-footer {
+    margin-top: 1rem;
+    color: rgba(220, 192, 210, 0.7);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    text-align: left;
+}
+
+.footer-link {
+    color: #33f1e5;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.footer-link:hover {
+    color: #5ff5eb;
+    text-decoration: underline;
+}

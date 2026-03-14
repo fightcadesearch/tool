@@ -19,6 +19,8 @@ function updateUITexts() {
     document.querySelector('.filters-title').textContent = window.i18n.t('filters', currentLang);
     document.getElementById('playerSearch').placeholder = window.i18n.t('searchPlaceholder', currentLang);
     document.getElementById('filterToggle').textContent = window.i18n.t('filterCountries', currentLang);
+    document.getElementById('notFoundText').textContent = window.i18n.t('notFoundText', currentLang);
+    document.getElementById('requestLink').textContent = window.i18n.t('requestLink', currentLang);
 }
 
 // Carregar dados dos jogadores do arquivo local
