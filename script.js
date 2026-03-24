@@ -10,6 +10,8 @@ let countryFilters = {}; // Armazena o estado dos filtros (true = incluindo, fal
 function initLanguage() {
     currentLang = window.i18n.detectLanguage();
     console.log('Idioma detectado:', currentLang);
+    // Atualizar o atributo lang do HTML
+    document.documentElement.lang = currentLang === 'pt' ? 'pt-BR' : currentLang;
 }
 
 // Atualizar textos da interface
@@ -345,8 +347,7 @@ function renderFilters() {
         const statusWord = isEnabled 
             ? window.i18n.t('including', currentLang)
             : window.i18n.t('ignoring', currentLang);
-        const resultsWord = window.i18n.t('results', currentLang);
-        const statusText = `${statusWord} ${countryData.total} ${resultsWord}`;
+        const statusText = `${statusWord} ${countryData.total}`;
         
         item.innerHTML = `
             ${flagHTML}
