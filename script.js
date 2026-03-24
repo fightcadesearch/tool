@@ -252,7 +252,7 @@ function showSuggestions(value) {
             
             const avatarImg = document.createElement('img');
             avatarImg.className = 'avatar-img';
-            avatarImg.src = `https://0.gravatar.com/avatar/${player.gravatar}?s=32&d=mp`;
+            avatarImg.src = `https://www.gravatar.com/avatar/${player.gravatar}?s=32&d=mp`;
             avatarImg.loading = 'lazy';
             
             // Adicionar handler de erro para imagens que falharem
