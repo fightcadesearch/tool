@@ -403,7 +403,6 @@ function renderFilters() {
         item.innerHTML = `
             ${flagHTML}
             <span class="filter-country">${countryName}</span>
-            <span class="filter-count">${countryData.total}</span>
             <div class="filter-switch" data-country="${countryData.abbreviation}">
                 <div class="switch-toggle ${isEnabled ? 'active' : ''}">
                     <div class="switch-slider"></div>
