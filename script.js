@@ -50,9 +50,14 @@ async function loadPlayers() {
                 };
                 
                 data.countries[country].players.forEach(player => {
+                    // Novo formato: player é um array [nickname, gravatar_id]
+                    const nickname = Array.isArray(player) ? player[0] : player;
+                    const gravatarId = Array.isArray(player) && player[1] ? player[1] : null;
+                    
                     playersData.push({
-                        name: player,
-                        country: abbreviation
+                        name: nickname,
+                        country: abbreviation,
+                        gravatar: gravatarId
                     });
                 });
             }
@@ -199,8 +204,22 @@ function highlightMatch(text, query) {
     return text.replace(regex, '<mark>$1</mark>');
 }
 
+// Função para limpar recursos de imagens antigas
+function cleanupOldAvatars() {
+    // Remover todas as imagens do DOM para liberar memória
+    const oldImages = autocompleteList.querySelectorAll('.avatar-img');
+    oldImages.forEach(img => {
+        // Limpar o src para liberar a referência
+        img.src = '';
+        img.remove();
+    });
+}
+
 // Função para filtrar e exibir sugestões
 function showSuggestions(value) {
+    // Limpar avatares antigos antes de criar novos
+    cleanupOldAvatars();
+    
     autocompleteList.innerHTML = '';
     currentFocus = -1;
     
@@ -226,13 +245,43 @@ function showSuggestions(value) {
         const div = document.createElement('div');
         div.className = 'autocomplete-item';
         
-        // Adicionar bandeira se disponível
-        const flag = flagCache.get(player.country);
-        if (flag) {
-            const flagSpan = document.createElement('span');
-            flagSpan.className = 'flag-icon';
-            flagSpan.innerHTML = flag;
-            div.appendChild(flagSpan);
+        // Se tem gravatar, criar estrutura com foto
+        if (player.gravatar) {
+            const avatarContainer = document.createElement('div');
+            avatarContainer.className = 'avatar-container';
+            
+            const avatarImg = document.createElement('img');
+            avatarImg.className = 'avatar-img';
+            avatarImg.src = `https://0.gravatar.com/avatar/${player.gravatar}?s=32&d=mp`;
+            avatarImg.loading = 'lazy';
+            
+            // Adicionar handler de erro para imagens que falharem
+            avatarImg.onerror = function() {
+                this.src = '';
+                this.style.display = 'none';
+            };
+            
+            avatarContainer.appendChild(avatarImg);
+            
+            // Adicionar bandeira sobre a foto (canto inferior direito)
+            const flag = flagCache.get(player.country);
+            if (flag) {
+                const flagOverlay = document.createElement('span');
+                flagOverlay.className = 'flag-overlay';
+                flagOverlay.innerHTML = flag;
+                avatarContainer.appendChild(flagOverlay);
+            }
+            
+            div.appendChild(avatarContainer);
+        } else {
+            // Modo antigo: apenas bandeira
+            const flag = flagCache.get(player.country);
+            if (flag) {
+                const flagSpan = document.createElement('span');
+                flagSpan.className = 'flag-icon';
+                flagSpan.innerHTML = flag;
+                div.appendChild(flagSpan);
+            }
         }
         
         // Adicionar nome do jogador
@@ -307,6 +356,8 @@ function removeActive(items) {
 document.addEventListener('click', function(e) {
     if (e.target !== searchInput) {
         autocompleteList.classList.remove('show');
+        // Limpar avatares quando fechar a lista
+        cleanupOldAvatars();
     }
 });
 
